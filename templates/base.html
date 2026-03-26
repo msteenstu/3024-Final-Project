@@ -6,32 +6,47 @@
     <title>{{ title }}</title>
 </head>
 <body>
+    {% block header %}
+        <header>
+            <h2>Book Worm</h2>
+            <nav>
+                <a href="{{ url_for('index') }}">Home</a>
+                {% if current_user.is_authenticated %}
+                    <a href="">Books For Sale</a>
+                    <a href="">My Cart</a>
+                    <a href="">My Orders</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{ url_for('signup') }}">Sign Up</a>
+                {% endif %}
+            </nav> 
+        </header>
+    {% endblock %}
 
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div id="flask-msg">
+                <p> {{ message }} </p>
+                <button type="button" class="rm_btn" onclick="removeMsg()">
+                    Remove Message
+                </button>
+            </div>    
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-           <div id="flask-msg">
-            <p> {{ message }} </p>
-            <button type="button" class="rm_btn" onclick="removeMsg()">
-                Remove Message
-            </button>
-        </div>    
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+    {% block main %}
+    {% endblock %}
 
-{% block main %}
-{% endblock %}
-
-{% block scripts %}
-<script>
-    function removeMsg(){
-        const msg = document.getElementById('flask-msg');
-        msg.style.display = 'none';
-    }
-</script>
-{% endblock %}
-
+    {% block scripts %}
+    <script>
+        function removeMsg(){
+            const msg = document.getElementById('flask-msg');
+            msg.style.display = 'none';
+        }
+    </script>
+    {% endblock %}
 </body>
 </html>

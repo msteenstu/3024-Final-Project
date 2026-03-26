@@ -2,3 +2,32 @@ body {
   font-family: "Gill Sans", sans-serif;
   font-size: medium;
 }
+
+header {
+    background: #e19cee;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+header h2 {
+    font-size: 1.5rem;
+    color: #daf3f6;
+}
+
+nav {
+    margin-left: 1.5em;
+}
+
+nav a {
+    color: #fbfbfb;
+    margin-left: 1rem;
+    text-decoration: none;
+    font-weight: 375;
+}
+
+main {
+    padding: 2rem;
+    max-width: 960px;
+    margin: 2em auto;
+}

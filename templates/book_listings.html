@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block main %}
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Page Count</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+
+        {% if book_listings %}
+            {% for book_listing in book_listings %}
+                <tr>
+                    <td> {{book_listing.title}} </td>
+                    <td> {{book_listing.author}} </td>
+                    <td> {{book_listing.genre}} </td>
+                    <td> {{book_listing.page_count}} </td>
+                    <td> {{book_listing.quantity}} </td>
+                    <td> {{book_listing.price}} </td>
+                </tr>
+
+            {% endfor %}
+        {% endif %}
+
+    </table>
+{% endblock %}
