@@ -1,7 +1,7 @@
 from flask import Flask
 
 app = Flask('BookWorm Web App')
-app.secret_key = 'books are great!'
+app.config['SECRET_KEY'] = 'books are great!'
 
 from flask_sqlalchemy import SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///book_worm.db'

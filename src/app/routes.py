@@ -97,11 +97,22 @@ def logout():
     flash('Successfully logged out, see you next time!')
     return redirect(url_for('index'))
 
+
+def query_all_books():
+    return Book.query.filter(Book.quantity > 0).all()
+
+def query_books_by_genre(user_input):
+    return db.session.execute(
+        text(f"SELECT * FROM books WHERE genre = '{user_input}'")
+        ).fetchall()
+
 @app.route('/user/books', methods=['GET','POST'])
 def view_books():
-    books = Book.query.filter(Book.quantity > 0).all()
-    #if request.method == 'POST':
-    #    pass
+    books = query_all_books()
+    
+    if request.method == 'POST' and request.form.get('genre'):
+        books = query_books_by_genre(request.form.get('genre'))
+
     return render_template('book_listings.html', books=books)
 
 @app.route('/user/cart', methods=['GET'])
