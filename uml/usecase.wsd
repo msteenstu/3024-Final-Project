@@ -1,0 +1,13 @@
+@startuml
+left to right direction
+
+:Customer:
+
+Customer --> (Signup)
+Customer --> (Login)
+Customer --> (Browse Books)
+Customer --> (Buy Books)
+Customer --> (View Orders)
+Customer --> (Logout)
+
+@enduml

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block main %}
     <table>
-        <tr>
+        <tr class="first-table-header">
             <th>Title</th>
             <th>Author</th>
             <th>Genre</th>
@@ -10,19 +10,24 @@
             <th>Price</th>
         </tr>
 
-        {% if book_listings %}
-            {% for book_listing in book_listings %}
+        {% if books %}
+            {% for book in books %}
                 <tr>
-                    <td> {{book_listing.title}} </td>
-                    <td> {{book_listing.author}} </td>
-                    <td> {{book_listing.genre}} </td>
-                    <td> {{book_listing.page_count}} </td>
-                    <td> {{book_listing.quantity}} </td>
-                    <td> {{book_listing.price}} </td>
+                    <td> {{book.title}} </td>
+                    <td> {{book.author}} </td>
+                    <td> {{book.genre}} </td>
+                    <td> {{book.page_count}} </td>
+                    <td> {{book.quantity}} </td>
+                    <td> {{book.price}} </td>
                 </tr>
-
             {% endfor %}
         {% endif %}
 
     </table>
+
+    <form method="post" action="{{ url_for('view_books') }}">
+    <p>Search by Genre: <input type="text" name="genre" required></p>
+    <button type="submit">Search</button>
+    </form>
+
 {% endblock %}

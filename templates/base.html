@@ -12,9 +12,9 @@
             <nav>
                 <a href="{{ url_for('index') }}">Home</a>
                 {% if current_user.is_authenticated %}
-                    <a href="">Books For Sale</a>
-                    <a href="">My Cart</a>
-                    <a href="">My Orders</a>
+                    <a href="{{ url_for('view_books') }}">Books For Sale</a>
+                    <a href="{{ url_for('view_cart') }}">My Cart</a>
+                    <a href="{{ url_for('view_orders') }}">My Orders</a>
                     <a href="{{ url_for('logout') }}">Logout</a>
                 {% else %}
                     <a href="{{ url_for('login') }}">Login</a>

@@ -31,3 +31,11 @@ main {
     max-width: 960px;
     margin: 2em auto;
 }
+
+table, tr{
+  border: 1px solid;
+}
+
+.first-table-header {
+    background-color: #e19cee;
+}
