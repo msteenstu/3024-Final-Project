@@ -1,9 +1,7 @@
 from flask import flash, redirect, render_template, url_for, request
 from flask_login import current_user, login_user, login_required, logout_user
-from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 import traceback
-import hashlib
 from app import app, csrf, db
 from app.models import Book, User
 from app.user_operations import*
@@ -99,3 +97,36 @@ def logout():
     logout_user()
     flash('Successfully logged out, see you next time!')
     return redirect(url_for('index'))
+
+@app.route('/user/delete', methods=['POST'])
+@login_required
+def delete_account():
+    user_id = current_user.id
+    
+    try:
+        delete_account(user_id)
+    except Exception:
+        flash('An error occurred while deleting account.')
+        db.session.rollback()
+        return redirect(url_for('index')) #should return to use account page
+
+    flash('Account deleted successfully, we are sorry to see you go!')
+    return redirect(url_for('index'))
+
+@app.route('/user/books', methods=['GET','POST'])
+def view_books():
+    books = query_all_books()
+
+    if request.method == 'POST' and request.form.get('genre'):
+        books = query_books_by_genre(request.form.get('genre'))
+
+    return render_template('book_listings.html', books=books)
+
+@app.route('/user/cart', methods=['GET'])
+@login_required
+def view_cart():
+    return render_template('view_cart.html')
+
+@app.route('/user/orders', methods=['GET'])
+def view_orders():
+    return render_template('view_orders.html')

@@ -2,7 +2,6 @@ from app import db
 from app.models import Book
 
 def populate_book_inventory():
-    print("Made it to function")
     #If no books exist in the database,
     #populate it with books.
     if not Book.query.first():
