@@ -1,4 +1,42 @@
 {% extends 'base.html' %}
 {% block main %}
 
+    {% if checkout_items %}
+    <table>
+        <tr class="first-table-header">
+            <th>Title</th>
+            <th>Quantity</th>
+            <th>Single Book Price</th>
+            <th>Book Subtotal</th>
+        </tr>
+
+            {% for checkout_item in checkout_items %}
+                <tr>
+                    <td> {{checkout_item.book.title}} </td>
+                    <td> {{checkout_item.item_quantity}} </td>
+                    <td> ${{checkout_item.book.price}} </td>
+                    <td> ${{checkout_item.item_quantity * checkout_item.book.price}} </td>
+                </tr>
+            {% endfor %}
+            
+            <tr rowspan="4">
+                <td>Order Total: ${{order_total}}</td>
+            </tr>
+
+    </table>
+        <form class="generic-form" method="post" action="{{ url_for('create_purchase') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <p>Order Recipient Name: <input type="text" name="name" required></p>
+            <p>Shipping Address : <input type="text" name="shipping_address" required></p>
+            <p>Credit or Debit Card: <input type="text" name="payment_cart" max="20" required></p>
+            <p>CCV: <input type="password" name="ccv_pin" max="4" required></p>
+            <button type="submit">Complete Purchase</button>
+        </form>
+
+    {% else %}
+    <br>
+    <h3>There is nothing in your cart.</h3>
+    
+    {% endif %}
+
 {% endblock %}

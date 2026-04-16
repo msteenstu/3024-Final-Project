@@ -27,9 +27,9 @@
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
-            <div id="flask-msg">
+            <div id="flask-msg" class="flask-pop-up">
                 <p> {{ message }} </p>
-                <button type="button" class="rm_btn" onclick="removeMsg()">
+                <button type="button" onclick="removeMsg()">
                     Remove Message
                 </button>
             </div>    

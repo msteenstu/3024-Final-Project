@@ -1,10 +1,11 @@
+/*To avoid px, divide px by 16 to get em*/
 body {
   font-family: "Gill Sans", sans-serif;
   font-size: medium;
 }
 
 header {
-    background: #e19cee;
+    background-color: #e19cee;
     padding: 1rem;
     display: flex;
     align-items: center;
@@ -21,21 +22,142 @@ nav {
 
 nav a {
     color: #fbfbfb;
-    margin-left: 1rem;
     text-decoration: none;
     font-weight: 375;
+    margin-left: 1rem;
+}
+
+nav a:hover{
+    background-color: #edc5f5;
+    text-decoration: underline;
 }
 
 main {
     padding: 2rem;
-    max-width: 960px;
+    max-width: 800px;
     margin: 2em auto;
 }
 
-table, tr{
-  border: 1px solid;
+h3 {
+    margin: 1em;
 }
 
-.first-table-header {
-    background-color: #e19cee;
+.flask-pop-up {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin: 0.5em;
+}
+
+table{
+    margin: 1em auto;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #bcd9f6;
+    text-align: left;
+}
+
+tr, td {
+    border-bottom: 0.5px solid black;
+    padding: 1.5em;
+}
+
+th {
+    background-color: #9dc9f4;
+    padding: 1.5em;
+}
+
+/*Courtesty of https://codepen.io/ahastudio/pen/eVovMv*/
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0;
+}
+
+.search-bar {
+    margin: 1.5em 0;
+    max-width: 60%;
+}
+
+.search-bar form {
+    display: inline-flex;
+    padding: 0.75em;
+    gap: 0.5em;
+    border-radius: 0.25em;
+    align-items: center;
+    width: 100%;
+}
+
+.search-bar form input[type=text] {
+    padding: 0.5em;
+    border: 1px solid black;
+    border-radius: 0.25em;
+    padding: 0.8em;
+    font-size: 1em;
+}
+
+.search-bar button[type=submit] {
+    padding: 0.8em;
+    font-size: 1em;
+}
+
+.add-to-cart {
+    width: 16%;
+}
+
+.add-to-cart form {
+    display: inline-flex;
+    gap: 0.5em;
+    align-items: center;
+}
+
+.add-to-cart input[type=number] {
+    font-size: 1em;
+    width: 2em;
+}
+
+.add-to-cart button[type=submit] {
+    font-size: 1em;
+    flex-shrink: 0;
+}
+
+.generic-form form {
+    background-color: #e1ebf5;
+    margin: 1em;
+    padding: 1em;
+    border-radius: 0.3em;
+    float: left;
+    width: 40%;
+}
+
+.generic-form label {
+    display: block;
+    padding-top: 0.5em;
+}
+
+.generic-form input {
+    display: inline-block;
+    width: 75%;
+    margin: 0.5em 0;
+    border: 1px solid black;
+    border-radius: 0.25em;
+    box-sizing: border-box;
+}
+
+.generic-form button[type=submit] {
+    display: block;
+    margin-top: 0.5em;
+}
+
+button[type=button], button[type=submit] {
+    cursor: pointer;
+    background-color: #9fcbf6;
+    color: #fbfbfb;
+    margin: 0.5em 0;
+    border-radius: 0.25em;
+    border: none;
+}
+
+button[type=button]:hover, button[type=submit]:hover {
+    background-color: #6fb1f4;
+    text-decoration: underline;
 }

@@ -1,13 +1,22 @@
 {% extends 'base.html' %}
 {% block main %}
+    
+    <div class="search-bar">
+        <form method="post" action="{{ url_for('view_books') }}">
+            <input type="text" name="genre" placeholder="Search by Genre" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
     <table>
-        <tr class="first-table-header">
+        <tr>
             <th>Title</th>
             <th>Author</th>
             <th>Genre</th>
             <th>Page Count</th>
             <th>Quantity</th>
             <th>Price</th>
+            <th>Select Quantity</th>
         </tr>
 
         {% if books %}
@@ -15,19 +24,21 @@
                 <tr>
                     <td> {{book.title}} </td>
                     <td> {{book.author}} </td>
-                    <td> {{book.genre.title}} </td>
+                    <td> {{book.genre}} </td>
                     <td> {{book.page_count}} </td>
                     <td> {{book.quantity}} </td>
-                    <td> {{book.price}} </td>
+                    <td> ${{'{0:0.2f}'.format(book.price)}} </td>
+                    <td class="add-to-cart">
+                        <form method="post" action="{{ url_for('add_book_to_cart') }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            <input type="hidden" name="book_id" value="{{ book.id }}">
+                            <input type="number" name="book_quantity" value="1" max="{{ book.quantity }}">
+                            <button type="submit">Add to Cart</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         {% endif %}
-
     </table>
-
-    <form method="post" action="{{ url_for('view_books') }}">
-    <p>Search by Genre: <input type="text" name="genre" required></p>
-    <button type="submit">Search</button>
-    </form>
 
 {% endblock %}
