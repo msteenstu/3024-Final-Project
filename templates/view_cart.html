@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block header %}
+    {{ super() }}
+{% endblock %}
 {% block main %}
 
     {% if checkout_items %}
@@ -13,9 +16,9 @@
             {% for checkout_item in checkout_items %}
                 <tr>
                     <td> {{checkout_item.book.title}} </td>
-                    <td> {{checkout_item.item_quantity}} </td>
+                    <td> {{checkout_item.quantity}} </td>
                     <td> ${{checkout_item.book.price}} </td>
-                    <td> ${{checkout_item.item_quantity * checkout_item.book.price}} </td>
+                    <td> ${{checkout_item.quantity * checkout_item.book.price}} </td>
                 </tr>
             {% endfor %}
             
@@ -24,15 +27,40 @@
             </tr>
 
     </table>
-        <form class="generic-form" method="post" action="{{ url_for('create_purchase') }}">
+    <div class="generic-form">
+        <form method="post" action="{{ url_for('complete_order') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <p>Order Recipient Name: <input type="text" name="name" required></p>
-            <p>Shipping Address : <input type="text" name="shipping_address" required></p>
-            <p>Credit or Debit Card: <input type="text" name="payment_cart" max="20" required></p>
-            <p>CCV: <input type="password" name="ccv_pin" max="4" required></p>
-            <button type="submit">Complete Purchase</button>
-        </form>
+            <label>Order Recipient Name</label>
+            <input type="text" name="order_name" maxlength="100" required>
+            
+            <div class="order-form-row">
+                <div class="order-form-row-large-input">
+                    <label>Shipping Address</label>
+                    <input type="text" name="shipping_address" maxlength="200" required>
+                </div>
+                <div class="order-form-row-small-input">
+                    <label>Zipcode</label>
+                    <input type="text" name="zipcode" maxlength="5" pattern="\d{5}" required>      
+                </div>
+            </div>
 
+            <label>Credit/Debit Card Number (no dashes)</label>
+            <input type="text" name="payment_card" maxlength="19" pattern="\d{16,19}" required>
+
+             <div class="order-form-row">
+                <div class="order-form-row-small-input">
+                    <label>CCV</label>
+                    <input type="password" name="ccv_pin" maxlength="4" pattern="\d{3,4}" required>         
+                </div>
+                <div class="order-form-row-small-input">
+                    <label>Expiration Date</label>
+                    <input type="text" name="expiration_date" placeholder="MM/YY" maxlength="5" pattern="\d{2}/\d{2}" required>
+                </div>
+             </div>
+
+            <button type="submit">Place Order</button>
+        </form>
+    </div>
     {% else %}
     <br>
     <h3>There is nothing in your cart.</h3>

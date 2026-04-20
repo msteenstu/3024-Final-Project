@@ -6,6 +6,7 @@ left to right direction
 Customer --> (Signup)
 Customer --> (Login)
 Customer --> (Browse Books)
+Customer --> (Add Books to Cart)
 Customer --> (Buy Books)
 Customer --> (View Orders)
 Customer --> (Delete Account)

@@ -62,4 +62,3 @@ def delete_account(user_id):
     
     db.session.delete(user)
     db.session.commit()
-

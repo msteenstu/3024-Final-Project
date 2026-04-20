@@ -13,14 +13,14 @@ def populate_book_inventory():
                 genre = "fantasy",
                 page_count = 310,
                 quantity = 10,
-                price = 15.00),
+                price = 15.99),
             Book(
                 title = "A Wrinkle in Time",
                 author = "Madeleine L'Engle",
                 genre = "science fiction",
                 page_count = 256,
                 quantity = 4,
-                price = 11.50),            
+                price = 11.49),            
             Book(
                 title = "Project Hail Mary",
                 author = "Andy Weir",
@@ -34,7 +34,7 @@ def populate_book_inventory():
                 genre = "thriller",
                 page_count = 310,
                 quantity = 3,
-                price = 12.00),
+                price = 12.84),
             Book(
                 title = "Murder on the Orient Express",
                 author = "Agatha Christie",
@@ -62,7 +62,7 @@ def populate_book_inventory():
                 genre = "romance",
                 page_count = 435,
                 quantity = 5,
-                price = 22.00)
+                price = 21.00)
         ])
         db.session.commit()
     else:

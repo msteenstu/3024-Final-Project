@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
+{% block header %}
+    {{ super() }}
+{% endblock %}
 {% block main %}
-    
     <div class="search-bar">
+        <p>Search by genre or type 'all' to list all books available for sale.</p>
         <form method="post" action="{{ url_for('view_books') }}">
             <input type="text" name="genre" placeholder="Search by Genre" required>
             <button type="submit">Search</button>
@@ -27,7 +30,7 @@
                     <td> {{book.genre}} </td>
                     <td> {{book.page_count}} </td>
                     <td> {{book.quantity}} </td>
-                    <td> ${{'{0:0.2f}'.format(book.price)}} </td>
+                    <td> ${{book.price}} </td>
                     <td class="add-to-cart">
                         <form method="post" action="{{ url_for('add_book_to_cart') }}">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>

@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
+{% block header %}
+    {{ super() }}
+{% endblock %}
 {% block main %}
     <h3>Create an account for Book Worm</h3>
     <div class="generic-form">
         <form method="post" action="{{ url_for('signup') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <label>Email</label>
-            <input type="email" name="email" required>
+            <input type="email" name="email" maxlength="100" required>
             <label>Name</label>
-            <input type="text" name="name" required>
+            <input type="text" name="name" maxlength="100" required>
             <label>Password</label>
-            <input type="password" name="password" required>
+            <input type="password" name="password" maxlength="65" required>
             <label>Confirm Password</label>
-            <input type="password" name="password_confirm" required>
+            <input type="password" name="password_confirm" maxlength="65" required>
             <button type="submit">Submit</button>
         </form>
     </div>

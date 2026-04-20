@@ -13,7 +13,8 @@ header {
 
 header h2 {
     font-size: 1.5rem;
-    color: #daf3f6;
+    font-style: italic;
+    color: #e9f2f3;
 }
 
 nav {
@@ -78,6 +79,11 @@ input[type=number]::-webkit-outer-spin-button {
     max-width: 60%;
 }
 
+.search-bar p {
+    font-weight: bold;
+    padding: 0 1em;
+}
+
 .search-bar form {
     display: inline-flex;
     padding: 0.75em;
@@ -121,12 +127,12 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .generic-form form {
-    background-color: #e1ebf5;
+    background-color: #add0f4;
     margin: 1em;
     padding: 1em;
     border-radius: 0.3em;
     float: left;
-    width: 40%;
+    width: 50%;
 }
 
 .generic-form label {
@@ -136,7 +142,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .generic-form input {
     display: inline-block;
-    width: 75%;
+    width: 80%;
     margin: 0.5em 0;
     border: 1px solid black;
     border-radius: 0.25em;
@@ -148,9 +154,26 @@ input[type=number]::-webkit-outer-spin-button {
     margin-top: 0.5em;
 }
 
+.order-form-row {
+    display: flex;
+    gap: 0.75em;
+}
+
+.order-form-row input{
+    width: 100%;
+}
+
+.order-form-row-large-input {
+    flex-grow: 3;
+}
+
+.order-form-row-small-input {
+    flex: 2;
+}
+
 button[type=button], button[type=submit] {
     cursor: pointer;
-    background-color: #9fcbf6;
+    background-color: #e19cee;
     color: #fbfbfb;
     margin: 0.5em 0;
     border-radius: 0.25em;
@@ -158,6 +181,6 @@ button[type=button], button[type=submit] {
 }
 
 button[type=button]:hover, button[type=submit]:hover {
-    background-color: #6fb1f4;
+    background-color: #edc5f5;
     text-decoration: underline;
 }
