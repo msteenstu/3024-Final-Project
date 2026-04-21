@@ -158,7 +158,7 @@ def view_cart():
         flash(message)
         return redirect(url_for('view_cart')) #refreshes pages to cart items are up-to-date
 
-    order_total = calculate_cart_total(checkout_items)
+    order_total = float(calculate_cart_total(checkout_items))
 
     return render_template('view_cart.html', checkout_items = checkout_items, order_total = order_total)
 
@@ -212,6 +212,16 @@ def complete_order():
             return redirect(url_for('view_cart'))
 
 
-@app.route('/user/orders', methods=['GET'])
-def view_orders():
-    return render_template('view_orders.html')
+@app.route('/user/orders', methods=['GET','POST'])
+@login_required
+def view_order_list():
+    invoice_list = query_all_buyer_orders(current_user.id)
+    return render_template('view_order_list.html', invoices = invoice_list)
+
+
+@app.route('/user/orders/<int:invoice_id>', methods=['GET'])
+def view_order(invoice_id):
+    invoice = get_buyer_invoice(invoice_id)
+    invoice_checkout_items = invoice.cart.checkout_items
+    
+    return render_template('view_order.html', invoice = invoice, checkout_items = invoice_checkout_items)

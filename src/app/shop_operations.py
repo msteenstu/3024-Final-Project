@@ -138,5 +138,8 @@ def update_book_inventory(buyer_cart):
     for item in checkout_items:
         item.book.quantity -= item.quantity
 
-def query_all_buyer_orders():
-    pass
+def query_all_buyer_orders(buyer_id: int):
+    return Invoice.query.filter_by(buyer_id = buyer_id).all()
+
+def get_buyer_invoice(invoice_id: int):
+    return Invoice.query.filter_by(id = invoice_id).first()

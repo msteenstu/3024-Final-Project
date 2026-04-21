@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block header %}
+    {{ super() }}
+{% endblock %}
+{% block main %}
+
+    {% if checkout_items %}
+        <h3>Books Purchased</h3>
+        <table>
+            <tr>
+                <th>Book</th>
+                <th>Amount Purchased</th>
+            </tr>
+
+            {% for checkout_item in checkout_items %}
+            <tr>
+                <td>{{ checkout_item.book.title }}</td>
+                <td>{{ checkout_item.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+        <h3>Order Details</h3>
+        <table>
+            <tr>
+                <th>Date Order Placed</th>
+                <th>Name Under Order</th>
+                <th>Shipping Address and Zipcode</th>
+                <th>Payment Card Used</th>
+                <th>Payment Card Expiration Date</th>
+                <th>Order Total</th>
+            </tr>
+
+            <tr>
+                <td> {{ invoice.order_date.strftime("%a %B %d, %Y") }} </td>
+                <td> {{invoice.order_name}} </td>
+                <td> {{ invoice.shipping_address }} {{ invoice.zipcode }} </td>
+                <td> xxxx-xxxx-xxxx-{{ invoice.last_four_card_digits }} </td>
+                <td> {{ invoice.card_expire_date }} </td>
+                <td> {{ "$%.2f" | format(invoice.order_total) }} </td>
+            </tr>
+        </table>
+    {% endif %}
+
+    <a href="{{ url_for('view_order_list') }}">
+        <button> Back to Orders Page </button>
+    </a>
+
+{% endblock %}

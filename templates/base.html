@@ -14,7 +14,7 @@
                 {% if current_user.is_authenticated %}
                     <a href="{{ url_for('view_books') }}">Books For Sale</a>
                     <a href="{{ url_for('view_cart') }}">My Cart</a>
-                    <a href="{{ url_for('view_orders') }}">My Orders</a>
+                    <a href="{{ url_for('view_order_list') }}">My Orders</a>
                     <a href="{{ url_for('view_account') }}">My Account</a>
                     <a href="{{ url_for('logout') }}">Logout</a>
                 {% else %}

@@ -15,18 +15,19 @@
 
             {% for checkout_item in checkout_items %}
                 <tr>
-                    <td> {{checkout_item.book.title}} </td>
-                    <td> {{checkout_item.quantity}} </td>
-                    <td> ${{checkout_item.book.price}} </td>
-                    <td> ${{checkout_item.quantity * checkout_item.book.price}} </td>
+                    <td>{{checkout_item.book.title}}</td>
+                    <td>{{checkout_item.quantity}}</td>
+                    <td>{{ "$%.2f" | format(checkout_item.book.price) }}</td>
+                    <td>{{ "$%.2f" | format(checkout_item.quantity * checkout_item.book.price) }}</td>
                 </tr>
             {% endfor %}
             
             <tr rowspan="4">
-                <td>Order Total: ${{order_total}}</td>
+                <td>Order Total: {{ "$%.2f" | format(order_total) }}</td>
             </tr>
 
     </table>
+    
     <div class="generic-form">
         <form method="post" action="{{ url_for('complete_order') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
@@ -62,8 +63,8 @@
         </form>
     </div>
     {% else %}
-    <br>
-    <h3>There is nothing in your cart.</h3>
+        <br>
+        <h3>There is nothing in your cart.</h3>
     
     {% endif %}
 

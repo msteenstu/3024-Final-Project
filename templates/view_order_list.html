@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block header %}
+    {{ super() }}
+{% endblock %}
+{% block main %}
+
+    <h3>Orders Placed</h3>
+
+    {% if invoices %}
+    <table>
+        <tr>
+            <th>Order Number</th>
+            <th>Order Date</th>
+            <th>Order Total</th>
+            <th>View Order</th>
+        </tr>
+
+        {% for invoice in invoices %}
+        <tr>
+            <td> {{ invoice.id }} </td>
+            <td> {{ invoice.order_date.strftime("%a %B %d, %Y") }} </td>
+            <td> {{ "$%.2f" | format(invoice.order_total) }} </td>
+            <td> 
+                <a href="{{ url_for('view_order', invoice_id = invoice.id) }}">
+                    <button>View Order Invoice</button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>     
+
+
+    {% else %}
+        <p>You have not placed an order yet.</p>
+    {% endif %}
+
+{% endblock %}
