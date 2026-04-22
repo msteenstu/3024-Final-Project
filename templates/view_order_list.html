@@ -22,7 +22,7 @@
             <td> {{ "$%.2f" | format(invoice.order_total) }} </td>
             <td> 
                 <a href="{{ url_for('view_order', invoice_id = invoice.id) }}">
-                    <button>View Order Invoice</button>
+                    <button type="button">View Order Invoice</button>
                 </a>
             </td>
         </tr>
@@ -31,7 +31,7 @@
 
 
     {% else %}
-        <p>You have not placed an order yet.</p>
+        <h4>You have not placed an order yet.</h4>
     {% endif %}
 
 {% endblock %}

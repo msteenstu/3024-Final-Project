@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import User
+from app.models import User, Cart, Invoice
 from sqlalchemy.exc import IntegrityError
 import hashlib
 import re
@@ -9,7 +9,7 @@ def register_account(email, name, password):
     
     clean_email = email.strip().lower()
 
-    check_if_user_exists = query_user(clean_email)
+    check_if_user_exists = query_user_by_email(clean_email)
     if(check_if_user_exists is not None):
         raise IntegrityError
     
@@ -51,14 +51,27 @@ def password_policy_enforcement(password):
 
     return True, ""
 
-def query_user(email):
+def query_user_by_email(email):
     return User.query.filter_by(email = email).first()
 
-def delete_account(user_id):
+def query_user_by_id(id):
+    return User.query.filter_by(id = id).first()
+
+def delete_user_account(user_id):
     user = User.query.filter_by(id = user_id).first()
 
     if not user:
         raise IntegrityError
+    
+
+    
+    #user_carts = Cart.query.filter_by(buyer_id = user_id).all()
+    #for cart in user_carts:
+    #    cart.buyer_id = None
+
+    #user_invoices = Invoice.query.filter_by(buyer_id = user_id).all()
+    #for invoice in user_invoices:
+    #    invoice.buyer_id = None
     
     db.session.delete(user)
     db.session.commit()

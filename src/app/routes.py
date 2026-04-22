@@ -76,7 +76,7 @@ def login():
                 return render_template('login.html')
 
             try:
-                user = query_user(form_email)
+                user = query_user_by_email(form_email)
                 _, user_password_hash = hash_user_password(form_password)
                 if user \
                 and user_password_hash  == user.password:
@@ -100,15 +100,27 @@ def logout():
     flash('Successfully logged out, see you next time!')
     return redirect(url_for('index'))
 
-@app.route('/user/account', methods=['GET', 'POST'])
+@app.route('/user/account', methods=['GET'])
 @login_required
 def view_account():
-    return render_template('user_account.html')
+    user = query_user_by_id(current_user.id)
+    return render_template('user_account.html', user = user)
 
 @app.route('/user/delete', methods=['POST'])
 @login_required
 def delete_account():
-    return redirect(url_for('index'))
+    if request.method == 'POST':
+        user_id = current_user.id
+        try:
+            delete_user_account(user_id)
+        except Exception:
+            print(traceback.format_exc())
+            flash('An error occurred while deleting account.')
+            db.session.rollback()
+            return redirect(url_for('view_account'))
+
+        flash('Account deleted successfully, we are sorry to see you go!')
+        return redirect(url_for('index'))
 
 @app.route('/user/books', methods=['GET','POST'])
 @login_required

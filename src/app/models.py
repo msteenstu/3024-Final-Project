@@ -1,5 +1,10 @@
 """
 Author: Mckenna
+buyer id can be nullable in case user account is deleted but order
+history needs to be preserved by store
+
+https://stackoverflow.com/questions/10142066/how-to-set-the-foreign-key-to-a-default-value-on-delete
+
 """
 
 from flask_login import UserMixin
@@ -48,7 +53,7 @@ class Cart(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     active_cart = db.Column(db.Boolean, nullable = False, default = False)
-    buyer_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    buyer_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
 
     buyer = db.relationship('User', back_populates='cart')
     checkout_items = db.relationship(
@@ -74,7 +79,7 @@ class Invoice(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     cart_id = db.Column(db.Integer, db.ForeignKey('user_carts.id'), nullable=False)
-    buyer_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    buyer_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
 
     order_name = db.Column(db.String(100), nullable=False)
     shipping_address = db.Column(db.String(200), nullable=False)
