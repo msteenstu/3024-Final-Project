@@ -6,6 +6,7 @@
     <div class="search-bar">
         <p>Search by genre or type 'all' to list all books available for sale.</p>
         <form method="post" action="{{ url_for('view_books') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input type="text" name="genre" placeholder="Search by Genre" required>
             <button type="submit">Search</button>
         </form>

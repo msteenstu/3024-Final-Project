@@ -1,3 +1,13 @@
+"""
+Author: Mckenna Steenbock
+Description: The methods in this module
+all support key shopping functionality
+including managing user carts and 
+validating book inventory. It also handles 
+user interactions with the bookstore including
+creating orders and basic querying for user invoices.
+"""
+
 from app import app, db
 from app.models import Book, Cart, Checkout_Item, Invoice
 from sqlalchemy import text
@@ -5,10 +15,25 @@ from datetime import datetime
 import pytz
 
 def query_all_books():
+    """
+    Queries all of the available books from
+    the database in a similar fashion to
+    the genre query to maintain consistency
+    in the codebase.
+    """
     return db.session.execute(
         text("SELECT * FROM books WHERE quantity > 0")).fetchall()
 
 def query_books_by_genre(user_input):
+    """
+    Vulnerability: SQL Injection
+    
+    User-supplied input is directly used in
+    a SQL query without parameterization,
+    enabling untrusted input to be interpreted 
+    as SQL code.
+    """
+    
     if user_input.lower() == 'all':
         return query_all_books()
     else:
@@ -55,6 +80,11 @@ def add_to_cart(user_id: int, book_id: int, book_quantity: int):
     db.session.commit()
 
 def validate_book_quantity_at_add(buyer_cart, book_id: int, requested_quantity: int):
+    """
+    Ensures the quantity of books being
+    added to the user's cart is a valid value.
+    """
+    
     current_book = Book.query.filter_by(id = book_id).first()
 
     if current_book is None:
@@ -91,6 +121,12 @@ def calculate_cart_total(checkout_items):
     return f"{total:.2f}"
 
 def validate_book_quantity_in_cart(buyer_cart):
+    """
+    Ensures the quantity of books in the
+    user's cart is valid before letting
+    the user make a purchase.
+    """
+    
     checkout_items = buyer_cart.checkout_items
     books_removed = []
 
@@ -133,6 +169,12 @@ def create_invoice(
     db.session.add(new_order)
 
 def update_book_inventory(buyer_cart):
+    """
+    Updates the book quantities in
+    the database after a purchase was
+    made.
+    """
+    
     checkout_items = buyer_cart.checkout_items
 
     for item in checkout_items:
@@ -142,4 +184,13 @@ def query_all_buyer_orders(buyer_id: int):
     return Invoice.query.filter_by(buyer_id = buyer_id).all()
 
 def get_buyer_invoice(invoice_id: int):
+    """
+    Vulnerability: Insecure Direct Object Reference
+    
+    The query retrieves an invoice using only
+    the passed in ID and does not enforce an
+    ownership check by filtering on the current
+    user's ID.
+    """
+    
     return Invoice.query.filter_by(id = invoice_id).first()

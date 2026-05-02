@@ -1,11 +1,15 @@
+"""
+Author: Mckenna Steenbock
+Description: Populates the database with
+books for sale if the database was 
+just created or if there are no books 
+present in it.
+"""
 from app import db
 from app.models import Book
 
 def populate_book_inventory():
-    #If no books exist in the database,
-    #populate it with books.
     if not Book.query.first():
-        print("Books added")
         db.session.add_all([
             Book(
                 title = "The Hobbit",
@@ -67,4 +71,3 @@ def populate_book_inventory():
         db.session.commit()
     else:
         return
-

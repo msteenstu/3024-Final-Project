@@ -1,10 +1,9 @@
 """
-Author: Mckenna
-buyer id can be nullable in case user account is deleted but order
-history needs to be preserved by store
-
-https://stackoverflow.com/questions/10142066/how-to-set-the-foreign-key-to-a-default-value-on-delete
-
+Author: Mckenna Steenbock
+Description: This Python file contains
+all of the required objects for the web 
+application that are also used to build 
+the database's schema.
 """
 
 from flask_login import UserMixin

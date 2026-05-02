@@ -1,18 +1,25 @@
 from flask import flash, redirect, render_template, url_for, request
 from flask_login import current_user, login_user, login_required, logout_user
 from sqlalchemy.exc import IntegrityError, InternalError
-import traceback
 import re
 from app import app, csrf, db
-from app.models import Book, User
 from app.user_operations import*
 from app.shop_operations import*
 
-#From docs
+# Custom CSRF protection implementation adapted from Flask-WTF's (n.d.) documentation.
 @app.before_request
 def validate_csrf_manually():
+    """
+    Vulnerability: Cross-Site Request Forgery (CSRF)
+    
+    CSRF protection is applied only to selected endpoints
+    handling POST requests. State-changing routes not
+    included in the endpoint list are unprotected and
+    vulnerable to forged requests.
+    """
+
     if request.endpoint in [
-        'login', 'signup', 'logout', 'add_book_to_cart', 'complete_order'] \
+        'login', 'signup', 'logout', 'view_books', 'add_book_to_cart', 'complete_order'] \
         and request.method == 'POST':
             csrf.protect()
 
@@ -58,7 +65,6 @@ def signup():
             return render_template('signup.html')
         
         except Exception:
-            traceback.print_exc()
             db.session.rollback()
             flash('Something went wrong when creating your account')
             return redirect(url_for('index'))
@@ -87,7 +93,6 @@ def login():
                     return render_template('login.html')
                 
             except Exception:
-                traceback.print_exc()
                 flash('An error occurred during login, try again,')
                 return redirect (url_for('index'))
 
@@ -109,12 +114,24 @@ def view_account():
 @app.route('/user/delete', methods=['POST'])
 @login_required
 def delete_account():
+    """
+    Vulnerability: Cross-Site Request Forgery (CSRF)
+    
+    This endpoint is not included in the CSRF
+    protection function and does not verify that
+    the request originated from the authenticated 
+    user. As a result, an attacker can trigger 
+    account deletion with a forged request.
+    """
+
     if request.method == 'POST':
         user_id = current_user.id
         try:
             delete_user_account(user_id)
+        except IntegrityError:
+            flash('That account does not exist.')
+            return redirect(url_for('index'))
         except Exception:
-            print(traceback.format_exc())
             flash('An error occurred while deleting account.')
             db.session.rollback()
             return redirect(url_for('view_account'))
@@ -187,10 +204,7 @@ def complete_order():
         payment_card = request.form.get('payment_card')
         card_expire_date = request.form.get('expiration_date')
 
-        #https://regex101.com/r/AFarfB/1
-        #/^(0[1-9]|1[0-2])\/?([0-9]{2})$/
-        #inspired by, changed some of it
-        #and html pattern
+        # Regex pattern adapted from Dib (n.d.).
         if (not re.match(r"^(0[1-9]|1[0-2])\/\d{2}$", card_expire_date) 
                 or int(card_expire_date[3:]) < 26):
             flash('Invalid expiration date provided')
@@ -223,16 +237,25 @@ def complete_order():
             flash('An error occurred while processing your order, try again.')
             return redirect(url_for('view_cart'))
 
-
 @app.route('/user/orders', methods=['GET','POST'])
 @login_required
 def view_order_list():
     invoice_list = query_all_buyer_orders(current_user.id)
     return render_template('view_order_list.html', invoices = invoice_list)
 
-
 @app.route('/user/orders/<int:invoice_id>', methods=['GET'])
+@login_required
 def view_order(invoice_id):
+    """
+    Vulnerability: Insecure Direct Object Reference
+    
+    An invoice can be retrieved using a
+    user-supplied identifier from the URL
+    without verifying that it belongs to the
+    current user, enabling unauthorized access 
+    to other users' invoices.
+    """
+    
     invoice = get_buyer_invoice(invoice_id)
     invoice_checkout_items = invoice.cart.checkout_items
     

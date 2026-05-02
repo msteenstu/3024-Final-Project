@@ -25,6 +25,7 @@
         </header>
     {% endblock %}
 
+    <!--Message flashing logic adapted from Flask's (n.d) documentation-->
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
