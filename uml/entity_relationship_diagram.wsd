@@ -1,0 +1,67 @@
+@startuml
+
+entity Book{
+    * id: integer <<PK>>
+    --
+    title: string
+    author: string
+    genre: string
+    page_count: integer
+    quantity: integer
+    price: double
+}
+
+entity User{
+    * id: integer <<PK>>
+    --
+    email: string
+    name: string
+    salt: string
+    password: binary
+}
+
+entity Cart{
+    * id: integer <<PK>>
+    active_cart: boolean
+    * buyer_id: integer <<FK, nullable>>
+}
+
+note top of Cart
+    Only one cart may be active per user,
+    and inactive carts are viewed as placed
+    orders.
+end note
+
+entity Checkout_Item{
+    * id: integer <<PK>>
+    --
+    *book_id: integer <<FK>>
+    *cart_id: integer <<FK>>
+    quantity: integer
+}
+
+entity Invoice {
+    * id: integer <<PK>>
+    --
+    * cart_id: integer <<FK>>
+    * buyer_id: integer <<FK>>
+    order_name: string
+    shipping_address: string
+    zipcode: string
+    last_four_card_digits: string
+    card_expire_date: string
+    order_total: double
+    order_date: date
+}
+
+
+Book ||..|{ Checkout_Item : part of
+
+User ||--o{ Invoice : has
+User ||--o{ Cart : uses
+
+Cart ||--|{ Checkout_Item : contains
+Cart ||..|| Invoice : generates
+
+
+@enduml

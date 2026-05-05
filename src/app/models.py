@@ -52,7 +52,11 @@ class Cart(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     active_cart = db.Column(db.Boolean, nullable = False, default = False)
-    buyer_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
+    buyer_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete='SET NULL'),
+        nullable=True
+    )
 
     buyer = db.relationship('User', back_populates='cart')
     checkout_items = db.relationship(
@@ -60,7 +64,12 @@ class Cart(db.Model):
         back_populates='cart',
         lazy=True
     )
-    invoice = db.relationship('Invoice', back_populates='cart', lazy=True)
+    invoice = db.relationship(
+        'Invoice',
+        back_populates='cart',
+        uselist=False,
+        lazy=True
+    )
 
 class Checkout_Item(db.Model):
     __tablename__ = 'checkout_items'
@@ -77,8 +86,17 @@ class Invoice(db.Model):
     __tablename__= 'order_invoices'
 
     id = db.Column(db.Integer, primary_key=True)
-    cart_id = db.Column(db.Integer, db.ForeignKey('user_carts.id'), nullable=False)
-    buyer_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
+    cart_id = db.Column(
+        db.Integer,
+        db.ForeignKey('user_carts.id'),
+        unique=True,
+        nullable=False
+    )
+    buyer_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id',ondelete='SET NULL'),
+        nullable=True
+    )
 
     order_name = db.Column(db.String(100), nullable=False)
     shipping_address = db.Column(db.String(200), nullable=False)
@@ -87,7 +105,7 @@ class Invoice(db.Model):
     last_four_card_digits = db.Column(db.String(4), nullable=False)
     card_expire_date = db.Column(db.String(5), nullable=False)
 
-    order_total = db.Column(db.Integer, nullable=False)
+    order_total = db.Column(db.Numeric(8, 2), nullable=False, default=0.00)
     order_date = db.Column(db.DateTime, nullable=False)
 
     cart = db.relationship('Cart', back_populates='invoice')

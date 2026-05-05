@@ -125,9 +125,10 @@ def delete_account():
     """
 
     if request.method == 'POST':
-        user_id = current_user.id
+        user = query_user_by_id(current_user.id)
+        user_name = user.name
         try:
-            delete_user_account(user_id)
+            delete_user_account(user.id)
         except IntegrityError:
             flash('That account does not exist.')
             return redirect(url_for('index'))
@@ -136,7 +137,7 @@ def delete_account():
             db.session.rollback()
             return redirect(url_for('view_account'))
 
-        flash('Account deleted successfully, we are sorry to see you go!')
+        flash(f'Account deleted successfully, we are sorry to see you go {user_name}!')
         return redirect(url_for('index'))
 
 @app.route('/user/books', methods=['GET','POST'])
@@ -229,7 +230,7 @@ def complete_order():
             buyer_cart.active_cart = False
             db.session.commit()
 
-            flash('Order was placed, thanks for shopping with Book Worm')
+            flash('Order was placed, thanks for shopping with Book Worm!')
             return redirect(url_for('index'))
 
         except (IntegrityError, ValueError, InternalError):
