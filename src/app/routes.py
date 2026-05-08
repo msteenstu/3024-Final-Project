@@ -1,3 +1,12 @@
+"""
+Author: Mckenna Steenbock
+Description: This Python file
+includes the custom-built CSRF
+protection function and all of
+the routes necessary to run the
+Book Worm application.
+"""
+
 from flask import flash, redirect, render_template, url_for, request
 from flask_login import current_user, login_user, login_required, logout_user
 from sqlalchemy.exc import IntegrityError, InternalError
@@ -186,7 +195,8 @@ def view_cart():
     valid_checkout_item_quantity, message = validate_book_quantity_in_cart(buyer_cart)
     if not valid_checkout_item_quantity:
         flash(message)
-        return redirect(url_for('view_cart')) #refreshes pages to cart items are up-to-date
+        # Will refresh the page so the cart items are up-to-date
+        return redirect(url_for('view_cart'))
 
     order_total = float(calculate_cart_total(checkout_items))
 

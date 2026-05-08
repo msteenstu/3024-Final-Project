@@ -26,8 +26,9 @@ with app.app_context():
     populate_book_inventory()
 
 # Cross-Site Request Forgery (CSRF) Support Configuration
-# The SAMESITE setting allows session cookies to be sent with cross-site requests 
-# from different origins over HTTPS.
+# The SAMESITE setting allows session cookies to be sent with 
+# cross-site requests from different origins over HTTPS.
+# Configuration settings informed by Boucher (2022).
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 

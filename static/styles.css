@@ -1,4 +1,3 @@
-/*To avoid px, divide px by 16 to get em*/
 body {
   font-family: "Gill Sans", sans-serif;
   font-size: medium;
@@ -152,6 +151,11 @@ input[type=number]::-webkit-outer-spin-button {
 .generic-form button[type=submit] {
     display: block;
     margin-top: 0.5em;
+}
+
+.password-rules {
+    float: right;
+    width: 35%;
 }
 
 .order-form-row {

@@ -79,6 +79,7 @@ def add_to_cart(user_id: int, book_id: int, book_quantity: int):
     
     db.session.commit()
 
+# Validation logic adapted from a previous project involving cart quantity validation (Steenbock, 2025).
 def validate_book_quantity_at_add(buyer_cart, book_id: int, requested_quantity: int):
     """
     Ensures the quantity of books being
@@ -120,6 +121,7 @@ def calculate_cart_total(checkout_items):
     total = round(total, 2)
     return f"{total:.2f}"
 
+# Validation logic adapted from a previous project involving cart quantity validation (Steenbock, 2025).
 def validate_book_quantity_in_cart(buyer_cart):
     """
     Ensures the quantity of books in the

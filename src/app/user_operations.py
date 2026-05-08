@@ -1,5 +1,5 @@
 """
-Author: Mckenna
+Author: Mckenna Steenbock
 Description: The methods in this module
 all support user operations within the
 application including user creation,
@@ -52,7 +52,7 @@ def hash_user_password(password):
     ).digest()
     return hash_salt, hashed_password
 
-# Adapted from my previous security audit project (2026).
+# Adapted from a previous security audit project (Steenbock, 2026).
 def password_policy_enforcement(password):
     if len(password) < 12:
         return False, "Password must be at least 12 characters long."

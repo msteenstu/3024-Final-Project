@@ -17,8 +17,8 @@ class Book(db.Model):
     author = db.Column(db.String(170), nullable=False)
     genre = db.Column(db.String(100), nullable=False)
     page_count = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Numeric(8, 2), nullable=False, default=0.00)
     quantity = db.Column(db.Integer, nullable=False, default=0)
-    price = db.Column(db.Numeric(6, 2), nullable=False, default=0.00)
 
     checkout_items = db.relationship(
         'Checkout_Item',
