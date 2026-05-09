@@ -2,33 +2,34 @@
 
 Book Worm is an intentionally vulnerable bookstore that was created to demonstrate insecure coding practices and the security risks they create within an e-commerce platform. This bookstore application simulates a simple e-commerce platform that provides users with a straightforward book shopping experience.
 
+The intentionally vulnerable code segments and snippets related to the vulnerabilties within the Book Worm codebase were explicitly annotated using comments and documentation strings to support vulnerability identification. Direct links to the vulnerable code snippets are included throughout the Proof-of-Concept demonstrations.
+
 ---
-
-
 
 ### Quick Links
 
 * [How to Run Book Worm](#how-to-run-book-worm)
 * [Proof-of-Concept Demonstrations](#proof-of-concept-demonstrations)
 * [Security Scan Results](#security-scan-results)
+* [The Source Code](src/app/)
 
 ### Technology Used
 
-The bookstore was developed using the Python Flask framework, and utilizes a SQLite database with database interactions facilitated through the SQLAlchemy ORM. Additionally, the application is run using an ad-hoc SSL certificate so security analysis remains focused on implementation-level vulnerabilities and not the transport-layer security issues.
+The bookstore was developed using the Python Flask framework, and utilizes a SQLite database with database interactions facilitated through the SQLAlchemy ORM. Additionally, the application is run using an ad-hoc SSL certificate so security analysis remains focused on implementation-level vulnerabilities and not transport-layer security issues.
 
 ### Key Vulnerable Features
 
-* Weak cryptographic practices with user password hashing
-* ORM misuse resulting in unparameterized SQL queries vulnerable to injection
-* An unprotected route handling a sensitive user account action vulnerable to cross-site request forgery (CSRF) attacks
-* Broken access control exposing user invoices through insecure direct object references (IDOR)
+* Weak cryptographic practices with user password hashing.
+* ORM misuse resulting in unparameterized SQL queries vulnerable to injection.
+* An unprotected route handling a sensitive user account action vulnerable to cross-site request forgery (CSRF) attacks.
+* Broken access control exposing user invoices through insecure direct object references (IDOR).
 
 ### Key Non-Vulnerable Features
 
-* A password policy
-* Client-side input validation for forms
-* Realistic add-to-cart and checkout functionality
-* Ability to view previous orders
+* A password policy.
+* Client-side input validation for forms.
+* Realistic add-to-cart and checkout functionality.
+* Ability to view previous orders.
 
 ### System Models
 
@@ -60,11 +61,9 @@ The entity relationship diagram illustrates the database objects used within the
 6. Export the application's secret key as an environment variable: `export SECRET_KEY="$(python -c 'import secrets; print(secrets.token_hex())')"`
 7. Export the environment variable to run the application: `export FLASK_APP=src/app`
 8. Run the application with an auto-generated, self-signed certificate: `flask run --cert=adhoc`
-9. Navigate to: `127.0.0.1:5000`
+9. Navigate to: `https://127.0.0.1:5000` and proceed even though the connection is not private
 
 ---
-
-
 
 ### Example Test Users for Book Worm
 
@@ -74,6 +73,8 @@ To test Book Worm's normal bookstore features, such as signing up, adding books 
 | ------------- | -------------------- | ------------- |
 | Percy Jackson | avidreader@gmail.com | Blue@ocean#12 |
 | Ada Lovelace  | type4fun@yahoo.com   | HelloWorld1!  |
+
+**Additional Note:** The application will not automatically contain any users or orders, the database is created when the application is first launched. Data will persist in subsequent launches.
 
 ## Proof-of-Concept Demonstrations
 
@@ -85,8 +86,6 @@ Both a static application security testing (SAST) tool and a dynamic application
 
 ---
 
-
-
 ### Semgrep (SAST)
 
 Semgrep was used to verify insecure coding practices within Book Worm's source code. This tool was selected for its robust Python-specific and Pro scan rulesets, which were easily accessible with a free Semgrep account. The codebase was scanned using the Pro ruleset to ensure comprehensive analysis of the application.
@@ -97,7 +96,7 @@ The scan results were exported as a SARIF file for simpler result reviewing. The
 semgrep scan --pro --sarif --sarif-output=semgrep.sarif --config auto src
 ```
 
-![img](security_scan_results/semgrep/semgrep_scan_results.png "Semgrep Scan Results")
+![img](security_scan_results/Semgrep/semgrep_scan_results.png "Semgrep Scan Results")
 
 Semgrep successfully identified several of the purposefully implemented insecure coding patterns including:
 
@@ -136,4 +135,4 @@ All of the resources and references used to build the application and its associ
 
 ## Disclaimer
 
-This application is deliberately vulnerable and contains insecure coding practices and misconfigurations that enable exploitation. This application was created for educational and security analysis purposes only and should not be deployed in a production environment or used as a legitimate e-commerce platform.
+This application is deliberately vulnerable and contains insecure coding practices and misconfigurations that enable exploitation. This application was created for educational and security analysis purposes only, and should not be deployed in a production environment or used as a legitimate e-commerce platform.
